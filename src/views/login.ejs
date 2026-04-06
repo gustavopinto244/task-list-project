@@ -1,0 +1,282 @@
+<%- include('includes/head') %>
+
+<%- include('includes/nav') %>
+
+<div class="container my-5">
+    
+  <div class="row">
+    <div class="col-lg-6 offset-lg-3">
+      <!-- Header -->
+      <div class="mb-5">
+        <h1 class="display-4">🔐 Authentication</h1>
+        <p class="lead text-muted">Sign in or create a new account</p>
+      </div>
+
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+          
+            <%- include('includes/flash-messages') %>    
+          <!-- Navigation Tabs -->
+          <ul class="nav nav-tabs nav-justified" role="tablist">
+            <li class="nav-item">
+              <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login-form" type="button" role="tab">
+                🔐 Sign In
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register-form" type="button" role="tab">
+                ✍️ Sign Up
+              </button>
+            </li>
+          </ul>
+
+          <!-- Tab Content -->
+          <div class="tab-content p-4">
+
+            <!-- Login Form -->
+            <div class="tab-pane fade show active" id="login-form" role="tabpanel">
+              <h3 class="mb-4 text-center">Welcome Back</h3>
+
+              <form method="POST" action="/login/login" class="needs-validation">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <div class="mb-3">
+                  <label for="login-email" class="form-label">Email Address</label>
+                  <input type="email" class="form-control" id="login-email" name="email" placeholder="your@email.com" required>
+                  <small class="form-text text-muted">We'll never share your email.</small>
+                </div>
+
+                <div class="mb-3">
+                  <label for="login-password" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="login-password" name="password" placeholder="Enter your password" required>
+                </div>
+
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="checkbox" id="remember-me" name="remember">
+                  <label class="form-check-label" for="remember-me">
+                    Remember me
+                  </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mb-3">
+                  Sign In
+                </button>
+
+                <div class="text-center">
+                  <a href="#" class="text-decoration-none small">Forgot your password?</a>
+                </div>
+              </form>
+
+              <!-- Social Login -->
+              <div class="mt-4">
+                <div class="auth-divider mb-3">
+                  <span class="small text-muted">or</span>
+                </div>
+
+                <button class="btn btn-outline-secondary w-100 mb-2" type="button">
+                  Sign in with Google
+                </button>
+                <button class="btn btn-outline-secondary w-100" type="button">
+                  Sign in with GitHub
+                </button>
+              </div>
+            </div>
+
+            <!-- Register Form -->
+            <div class="tab-pane fade" id="register-form" role="tabpanel">
+              <h3 class="mb-4 text-center">Create Your Account</h3>
+
+              <form method="POST" action="/login/register" class="needs-validation">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <div class="mb-3">
+                  <label for="register-name" class="form-label">Name</label>
+                  <input type="text" class="form-control" id="register-name" name="name" placeholder="Name" required>
+                </div>
+
+                <div class="mb-3">
+                  <label for="register-email" class="form-label">Email Address</label>
+                  <input type="email" class="form-control" id="register-email" name="email" placeholder="your@email.com" required>
+                  <small class="form-text text-muted">We'll never share your email.</small>
+                </div>
+
+                <div class="mb-3">
+                  <label for="register-password" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="register-password" name="password" placeholder="Create a strong password" required>
+                  <small class="form-text text-muted">At least 8 characters with uppercase, lowercase, and numbers.</small>
+                </div>
+
+                <div class="mb-3">
+                  <label for="register-confirm-password" class="form-label">Confirm Password</label>
+                  <input type="password" class="form-control" id="register-confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+                </div>
+
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+                  <label class="form-check-label" for="terms">
+                    I agree to the <a href="#" class="text-decoration-none">Terms of Service</a> and <a href="#" class="text-decoration-none">Privacy Policy</a>
+                  </label>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100 mb-3">
+                  Create Account
+                </button>
+
+                <p class="text-center small">
+                  Already have an account? <a href="/login/index" data-bs-toggle="tab" role="tab" class="text-decoration-none fw-bold">Sign in here</a>
+                </p>
+              </form>
+
+              <!-- Social Register -->
+              <div class="mt-4">
+                <div class="auth-divider mb-3">
+                  <span class="small text-muted">or sign up with</span>
+                </div>
+
+                <button class="btn btn-outline-secondary w-100 mb-2" type="button">
+                  Google
+                </button>
+                <button class="btn btn-outline-secondary w-100" type="button">
+                  GitHub
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Footer Info -->
+          <div class="bg-light p-3 text-center border-top">
+            <small class="text-muted">
+              Protected by reCAPTCHA and subject to the Google 
+              <a href="#" class="text-decoration-none">Privacy Policy</a> and 
+              <a href="#" class="text-decoration-none">Terms of Service</a>.
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Info -->
+      <div class="text-center mt-4 text-white">
+        <p class="small">© 2026 Task Manager. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .nav-tabs {
+    background-color: #f8f9fa;
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+
+  .nav-tabs .nav-link {
+    color: #6c757d;
+    border: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .nav-tabs .nav-link.active {
+    color: #0d6efd;
+    background-color: white;
+    border-bottom: 3px solid #0d6efd;
+  }
+
+  .nav-tabs .nav-link:hover:not(.active) {
+    color: #0d6efd;
+  }
+
+  .form-control {
+    border-radius: 0.375rem;
+    border: 1px solid #dee2e6;
+    transition: all 0.3s ease;
+  }
+
+  .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+
+  .btn-primary {
+    background-color: #0d6efd;
+    border: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: #0b5ed7;
+  }
+
+  .btn-success {
+    background-color: #198754;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .btn-success:hover {
+    background-color: #157347;
+  }
+
+  .btn-outline-secondary:hover {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+  }
+
+  .card {
+    border-radius: 0.5rem;
+  }
+
+  .form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-left: 0;
+  }
+
+  .form-check-input {
+    cursor: pointer;
+    width: 1.25em;
+    height: 1.25em;
+    position: static;
+    margin: 0;
+    margin-left: 0;
+    margin-top: 0;
+    float: none;
+  }
+
+  .form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+  }
+
+  .form-check-input:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+
+  .tab-content {
+    min-height: 400px;
+  }
+
+  .auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .auth-divider::before,
+  .auth-divider::after {
+    content: '';
+    flex: 1;
+    border-top: 1px solid #dee2e6;
+  }
+
+  .auth-divider span {
+    background: #fff;
+    padding: 0 0.25rem;
+    white-space: nowrap;
+  }
+</style>
+
+<script src="/assets/js/login.js"></script>
+<%- include('includes/footer') %>
