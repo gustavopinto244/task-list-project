@@ -1,0 +1,50 @@
+{
+  "name": "task-list-project",
+  "version": "1.0.0",
+  "description": "Simple task manager built with Node.js, Express, and MongoDB, created to consolidate backend development skills. Features a clean structure and environment management with NVM, with deployment on Linux.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js --ignore public --ignore node_modules",
+    "dev": "webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gustavopinto244/task-list-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/gustavopinto244/task-list-project/issues"
+  },
+  "homepage": "https://github.com/gustavopinto244/task-list-project#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^6.0.0",
+    "core-js": "^3.49.0",
+    "csurf": "^1.11.0",
+    "dotenv": "^17.4.1",
+    "ejs": "^5.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "helmet": "^8.1.0",
+    "mongoose": "^9.4.1",
+    "path": "^0.12.7",
+    "regenerator-runtime": "^0.14.1",
+    "validator": "^13.15.35"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.28.6",
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.2",
+    "babel-loader": "^10.1.1",
+    "css-loader": "^7.1.4",
+    "nodemon": "^3.1.14",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.105.4",
+    "webpack-cli": "^7.0.2"
+  }
+}
