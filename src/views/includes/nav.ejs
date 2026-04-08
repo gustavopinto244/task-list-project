@@ -5,10 +5,10 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav ml-auto align-items-center">
       <% if (user) { %>
       <li class="nav-item">
-        <p class="navbar-text">Hello, <%= user.name %>!</p>
+        <p class="nav-link mb-0 py-2" style="cursor: default; font-size:0.92em;">Hello, <%= user.name %>!</p>
       </li>
       <% } %>
 
@@ -18,7 +18,10 @@
       </li>
       <% } else { %>
       <li class="nav-item">
-        <a class="nav-link" href="/login/logout">Logout</a>
+        <form action="/logout" method="POST" style="display: flex; align-items: center; margin: 0;">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button type="submit" class="nav-link" style="background: none; border: none; cursor: pointer; padding: 0.5rem 1rem; margin: 0; height: auto; line-height: inherit;">Logout</button>
+        </form>
       </li>
       <% } %>
     </ul>
