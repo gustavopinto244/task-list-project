@@ -1,316 +1,206 @@
 <%- include('includes/head') %>
 <%- include('includes/nav') %>
 
-<div class="container my-5">
-  <div class="row">
-    <div class="col-lg-8 offset-lg-2">
-      <!-- Header -->
-      <div class="mb-5">
-        <h1 class="display-4">✓ Task List</h1>
-        <p class="lead text-muted">Organize and track your daily tasks</p>
-      </div>
+<div class="hero-shell">
+  <div class="hero-glow hero-glow-left"></div>
+  <div class="hero-glow hero-glow-right"></div>
 
-      <!-- Add Task Form -->
-      <div class="card mb-4 border-0 shadow-sm">
-        <div class="card-body">
-          <form method="POST" class="row g-2">
-            <div class="col-md-7">
-              <input type="text" class="form-control form-control-lg" placeholder="Add a new task..." required>
-            </div>
-            <div class="col-md-3">
-              <select class="form-select form-select-lg">
-                <option value="">Priority</option>
-                <option value="high">🔴 High</option>
-                <option value="medium">🟡 Medium</option>
-                <option value="low">🟢 Low</option>
-              </select>
-            </div>
-            <div class="col-md-2">
-              <button type="submit" class="btn btn-primary btn-lg w-100">
-                ➕ Add
-              </button>
-            </div>
-          </form>
+  <main class="container py-5 py-lg-6">
+    <div class="row align-items-center min-vh-100 py-4">
+      <div class="col-lg-7">
+        <span class="eyebrow">Learning project</span>
+        <h1 class="display-3 hero-title mb-4">Welcome to Task List Project</h1>
+        <p class="lead hero-copy mb-4">
+          This project was created to practice web development with Node.js, Express, EJS, and MongoDB.
+          Here I track the evolution of the system, test ideas, and turn learning into a real application.
+        </p>
+
+        <div class="d-flex flex-wrap mb-4">
+          <a class="btn btn-dark btn-lg px-4 mr-3 mb-2" href="https://www.linkedin.com/in/gustavo-pinto-da-concei%C3%A7%C3%A3o/" target="_blank" rel="noreferrer">
+            View LinkedIn
+          </a>
+          <a class="btn btn-outline-dark btn-lg px-4 mb-2" href="https://github.com/gustavopinto244" target="_blank" rel="noreferrer">
+            View GitHub
+          </a>
+        </div>
+
+        <div class="hero-note">
+          <strong>Goal:</strong> learn, iterate, and turn practice into a product.
         </div>
       </div>
 
-      <!-- Tasks by Status -->
-      <ul class="nav nav-tabs mb-4" role="tablist">
-        <li class="nav-item">
-          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#pending">
-            📋 Pending <span class="badge bg-danger ms-2">7</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#in-progress">
-            ⏳ In Progress <span class="badge bg-warning ms-2">2</span>
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#completed">
-            ✅ Completed <span class="badge bg-success ms-2">5</span>
-          </button>
-        </li>
-      </ul>
-
-      <div class="tab-content">
-        
-        <!-- Pending -->
-        <div class="tab-pane fade show active" id="pending">
-          <div class="list-group">
-            
-            <label class="list-group-item d-flex align-items-start gap-3 p-3 border-start border-danger border-4">
-              <input class="form-check-input mt-1" type="checkbox">
-              <div class="flex-grow-1">
-                <h6 class="mb-1">Finish the sales report</h6>
-                <p class="text-muted mb-2 small">Review Q1 data and generate charts</p>
-                <span class="badge bg-danger">🔴 High</span>
-                <span class="badge bg-light text-dark ms-2">Due: 05/04/2026</span>
+      <div class="col-lg-5 mt-5 mt-lg-0">
+        <div class="card hero-card border-0 shadow-lg">
+          <div class="card-body p-4 p-lg-5">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+              <div>
+                <small class="text-uppercase text-muted letter-spacing">Overview</small>
+                <h2 class="h3 mb-0">What you'll find here</h2>
               </div>
-              <button class="btn btn-sm btn-outline-danger" type="button">Remove</button>
-            </label>
-
-            <label class="list-group-item d-flex align-items-start gap-3 p-3 border-start border-warning border-4">
-              <input class="form-check-input mt-1" type="checkbox">
-              <div class="flex-grow-1">
-                <h6 class="mb-1">Study advanced TypeScript</h6>
-                <p class="text-muted mb-2 small">Chapters 5-7 from the book "Pro TypeScript"</p>
-                <span class="badge bg-warning">🟡 Medium</span>
-                <span class="badge bg-light text-dark ms-2">Due: 10/04/2026</span>
-              </div>
-              <button class="btn btn-sm btn-outline-danger" type="button">Remove</button>
-            </label>
-
-            <label class="list-group-item d-flex align-items-start gap-3 p-3 border-start border-success border-4">
-              <input class="form-check-input mt-1" type="checkbox">
-              <div class="flex-grow-1">
-                <h6 class="mb-1">Go grocery shopping</h6>
-                <p class="text-muted mb-2 small">Milk, bread, meat, and fruits</p>
-                <span class="badge bg-success">🟢 Low</span>
-                <span class="badge bg-light text-dark ms-2">Due: 06/04/2026</span>
-              </div>
-              <button class="btn btn-sm btn-outline-danger" type="button">Remove</button>
-            </label>
-
-            <label class="list-group-item d-flex align-items-start gap-3 p-3 border-start border-danger border-4">
-              <input class="form-check-input mt-1" type="checkbox">
-              <div class="flex-grow-1">
-                <h6 class="mb-1">Review API project code</h6>
-                <p class="text-muted mb-2 small">Pull request #42 - validations and error handling</p>
-                <span class="badge bg-danger">🔴 High</span>
-                <span class="badge bg-light text-dark ms-2">Due: 08/04/2026</span>
-              </div>
-              <button class="btn btn-sm btn-outline-danger" type="button">Remove</button>
-            </label>
-
-            <label class="list-group-item d-flex align-items-start gap-3 p-3 border-start border-warning border-4">
-              <input class="form-check-input mt-1" type="checkbox">
-              <div class="flex-grow-1">
-                <h6 class="mb-1">Update project documentation</h6>
-                <p class="text-muted mb-2 small">README and contribution guide</p>
-                <span class="badge bg-warning">🟡 Medium</span>
-                <span class="badge bg-light text-dark ms-2">Due: 12/04/2026</span>
-              </div>
-              <button class="btn btn-sm btn-outline-danger" type="button">Remove</button>
-            </label>
-
-            <label class="list-group-item d-flex align-items-start gap-3 p-3 border-start border-success border-4">
-              <input class="form-check-input mt-1" type="checkbox">
-              <div class="flex-grow-1">
-                <h6 class="mb-1">Organize retrospective meeting</h6>
-                <p class="text-muted mb-2 small">Schedule with the team and prepare the agenda</p>
-                <span class="badge bg-success">🟢 Low</span>
-                <span class="badge bg-light text-dark ms-2">Due: 15/04/2026</span>
-              </div>
-              <button class="btn btn-sm btn-outline-danger" type="button">Remove</button>
-            </label>
-
-            <label class="list-group-item d-flex align-items-start gap-3 p-3 border-start border-warning border-4">
-              <input class="form-check-input mt-1" type="checkbox">
-              <div class="flex-grow-1">
-                <h6 class="mb-1">Implement form validation</h6>
-                <p class="text-muted mb-2 small">Frontend - real-time validation with visual feedback</p>
-                <span class="badge bg-warning">🟡 Medium</span>
-                <span class="badge bg-light text-dark ms-2">Due: 09/04/2026</span>
-              </div>
-              <button class="btn btn-sm btn-outline-danger" type="button">Remove</button>
-            </label>
-
-          </div>
-        </div>
-
-        <!-- In Progress -->
-        <div class="tab-pane fade" id="in-progress">
-          <div class="list-group">
-            
-            <label class="list-group-item d-flex align-items-start gap-3 p-3 border-start border-info border-4">
-              <input class="form-check-input mt-1" type="checkbox">
-              <div class="flex-grow-1">
-                <h6 class="mb-1">Refactor Header component</h6>
-                <p class="text-muted mb-2 small">Improve performance and responsiveness</p>
-                <span class="badge bg-warning">🟡 Medium</span>
-                <span class="badge bg-light text-dark ms-2">Due: 07/04/2026</span>
-                <div class="progress mt-2" style="height: 20px;">
-                  <div class="progress-bar bg-info" style="width: 60%;">60%</div>
-                </div>
-              </div>
-              <button class="btn btn-sm btn-outline-danger" type="button">Remove</button>
-            </label>
-
-            <label class="list-group-item d-flex align-items-start gap-3 p-3 border-start border-info border-4">
-              <input class="form-check-input mt-1" type="checkbox">
-              <div class="flex-grow-1">
-                <h6 class="mb-1">Fix login bugs</h6>
-                <p class="text-muted mb-2 small">Issues #18 and #19 - timeout and redirect</p>
-                <span class="badge bg-danger">🔴 High</span>
-                <span class="badge bg-light text-dark ms-2">Due: 06/04/2026</span>
-                <div class="progress mt-2" style="height: 20px;">
-                  <div class="progress-bar bg-info" style="width: 40%;">40%</div>
-                </div>
-              </div>
-              <button class="btn btn-sm btn-outline-danger" type="button">Remove</button>
-            </label>
-
-          </div>
-        </div>
-
-        <!-- Completed -->
-        <div class="tab-pane fade" id="completed">
-          <div class="list-group">
-            
-            <label class="list-group-item d-flex align-items-start gap-3 p-3 border-start border-success border-4">
-              <input class="form-check-input mt-1" type="checkbox" checked>
-              <div class="flex-grow-1">
-                <h6 class="mb-1"><del>Prepare results presentation</del></h6>
-                <p class="text-muted mb-2 small">Slides and notes for the CEO</p>
-                <span class="badge bg-success">✅ Completed</span>
-                <span class="badge bg-light text-dark ms-2">Completed on: 04/04/2026</span>
-              </div>
-              <button class="btn btn-sm btn-outline-danger" type="button">Remove</button>
-            </label>
-
-            <label class="list-group-item d-flex align-items-start gap-3 p-3 border-start border-success border-4">
-              <input class="form-check-input mt-1" type="checkbox" checked>
-              <div class="flex-grow-1">
-                <h6 class="mb-1"><del>Set up CI/CD pipeline</del></h6>
-                <p class="text-muted mb-2 small">GitHub Actions and automatic deploy</p>
-                <span class="badge bg-success">✅ Completed</span>
-                <span class="badge bg-light text-dark ms-2">Completed on: 03/04/2026</span>
-              </div>
-              <button class="btn btn-sm btn-outline-danger" type="button">Remove</button>
-            </label>
-
-            <label class="list-group-item d-flex align-items-start gap-3 p-3 border-start border-success border-4">
-              <input class="form-check-input mt-1" type="checkbox" checked>
-              <div class="flex-grow-1">
-                <h6 class="mb-1"><del>Write unit tests</del></h6>
-                <p class="text-muted mb-2 small">80% project coverage</p>
-                <span class="badge bg-success">✅ Completed</span>
-                <span class="badge bg-light text-dark ms-2">Completed on: 02/04/2026</span>
-              </div>
-              <button class="btn btn-sm btn-outline-danger" type="button">Remove</button>
-            </label>
-
-            <label class="list-group-item d-flex align-items-start gap-3 p-3 border-start border-success border-4">
-              <input class="form-check-input mt-1" type="checkbox" checked>
-              <div class="flex-grow-1">
-                <h6 class="mb-1"><del>Back up the database</del></h6>
-                <p class="text-muted mb-2 small">Full and incremental backup</p>
-                <span class="badge bg-success">✅ Completed</span>
-                <span class="badge bg-light text-dark ms-2">Completed on: 01/04/2026</span>
-              </div>
-              <button class="btn btn-sm btn-outline-danger" type="button">Remove</button>
-            </label>
-
-            <label class="list-group-item d-flex align-items-start gap-3 p-3 border-start border-success border-4">
-              <input class="form-check-input mt-1" type="checkbox" checked>
-              <div class="flex-grow-1">
-                <h6 class="mb-1"><del>Review client proposal</del></h6>
-                <p class="text-muted mb-2 small">Technical analysis and budget</p>
-                <span class="badge bg-success">✅ Completed</span>
-                <span class="badge bg-light text-dark ms-2">Completed on: 31/03/2026</span>
-              </div>
-              <button class="btn btn-sm btn-outline-danger" type="button">Remove</button>
-            </label>
-
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Summary Stats -->
-      <div class="row mt-5">
-        <div class="col-md-4 mb-3">
-          <div class="card border-0 shadow-sm bg-light">
-            <div class="card-body text-center">
-              <h5 class="card-title">Pending</h5>
-              <h2 class="display-6 text-danger">7</h2>
-              <small class="text-muted">Waiting for action</small>
+              <span class="badge bg-dark rounded-pill px-3 py-2">Learning</span>
             </div>
-          </div>
-        </div>
-        <div class="col-md-4 mb-3">
-          <div class="card border-0 shadow-sm bg-light">
-            <div class="card-body text-center">
-              <h5 class="card-title">In Progress</h5>
-              <h2 class="display-6 text-info">2</h2>
-              <small class="text-muted">Currently being worked on</small>
+
+            <div class="feature-item">
+              <div class="feature-bullet"></div>
+              <div>
+                <h3 class="h6 mb-1">Task interface</h3>
+                <p class="text-muted mb-0">A dedicated space to manage lists and track progress.</p>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="col-md-4 mb-3">
-          <div class="card border-0 shadow-sm bg-light">
-            <div class="card-body text-center">
-              <h5 class="card-title">Completed</h5>
-              <h2 class="display-6 text-success">5</h2>
-              <small class="text-muted">Finished</small>
+
+            <div class="feature-item">
+              <div class="feature-bullet"></div>
+              <div>
+                <h3 class="h6 mb-1">Evolving back-end</h3>
+                <p class="text-muted mb-0">A structure built to explore routes, controllers, and persistence.</p>
+              </div>
             </div>
+
+            <div class="feature-item mb-0">
+              <div class="feature-bullet"></div>
+              <div>
+                <h3 class="h6 mb-1">Portfolio and study</h3>
+                <p class="text-muted mb-0">A project to practice, show progress, and share what I'm learning.</p>
+              </div>
+            </div>
+
+            <a class="btn btn-primary btn-block btn-lg mt-4" href="/tasks/index">Open tasks</a>
           </div>
         </div>
       </div>
-
-      <!-- Action Buttons -->
-      <div class="d-flex gap-2 mt-5 mb-5">
-        <button class="btn btn-primary btn-lg flex-grow-1">
-          💾 Save Tasks
-        </button>
-        <button class="btn btn-outline-secondary btn-lg flex-grow-1">
-          🔄 Reorder
-        </button>
-        <button class="btn btn-outline-danger btn-lg flex-grow-1">
-          🗑️ Clear Completed
-        </button>
-      </div>
-
     </div>
-  </div>
+  </main>
 </div>
 
 <style>
-  .list-group-item {
-    cursor: pointer;
-    transition: background-color 0.2s;
+  body {
+    background: var(--primary-color);
   }
-  
-  .list-group-item:hover {
-    background-color: #f8f9fa;
+  .badge {
+    color: white;
   }
-
-  .list-group-item input[type="checkbox"]:checked ~ div h6 {
-    opacity: 0.7;
-  }
-
-  .nav-tabs .nav-link.active {
-    border-bottom-width: 3px;
-    font-weight: 600;
+  .hero-shell {
+    position: relative;
+    overflow: hidden;
+    min-height: calc(100vh - 56px);
+    background:
+      radial-gradient(circle at top left, rgba(255, 255, 255, 0.2), transparent 32%),
+      radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.14), transparent 34%),
+      linear-gradient(180deg, rgba(9, 48, 56, 0.08) 0%, rgba(17, 86, 102, 0.1) 100%);
   }
 
-  .border-start {
-    border-left-width: 6px !important;
+  .hero-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(20px);
+    opacity: 0.55;
+    pointer-events: none;
   }
 
-  .progress {
-    border-radius: 0.25rem;
+  .hero-glow-left {
+    width: 220px;
+    height: 220px;
+    left: -60px;
+    top: 80px;
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  .hero-glow-right {
+    width: 280px;
+    height: 280px;
+    right: -100px;
+    bottom: 20px;
+    background: rgba(9, 48, 56, 0.22);
+  }
+
+  .eyebrow {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.82);
+    color: #0f4d5b;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .hero-title {
+    color: black;
+    line-height: 0.95;
+    font-weight: 800;
+  }
+
+  .hero-copy {
+    max-width: 38rem;
+    color: rgba(0, 0, 0, 0.92);
+    font-size: 1.15rem;
+  }
+
+  .hero-note {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    padding: 0.85rem 1rem;
+    border-left: 4px solid #0f4d5b;
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.16);
+    color: black;
+    box-shadow: 0 12px 35px rgba(9, 48, 56, 0.25);
+  }
+
+  .hero-card {
+    border-radius: 1.5rem;
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.93);
+  }
+
+  .letter-spacing {
+    letter-spacing: 0.12em;
+  }
+
+  .feature-item {
+    display: flex;
+    gap: 0.9rem;
+    margin-bottom: 1.1rem;
+    padding-bottom: 1.1rem;
+    border-bottom: 1px solid rgba(20, 33, 61, 0.08);
+  }
+
+  .feature-item:last-of-type {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .feature-bullet {
+    width: 0.8rem;
+    height: 0.8rem;
+    margin-top: 0.35rem;
+    border-radius: 999px;
+    background: var(--primary-color-darker);
+    flex: 0 0 auto;
+  }
+
+  @media (max-width: 991.98px) {
+    .hero-shell {
+      min-height: auto;
+    }
+
+    .hero-title {
+      font-size: 3rem;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .hero-title {
+      font-size: 2.4rem;
+    }
+
+    .hero-copy {
+      font-size: 1.05rem;
+    }
+    
   }
 </style>
 

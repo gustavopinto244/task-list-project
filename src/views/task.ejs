@@ -1,0 +1,321 @@
+<%- include('includes/head') %>
+<%- include('includes/nav') %>
+
+<div class="container my-5">
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2">
+
+      <!-- Header -->
+      <div class="mb-5">
+        <h1 class="display-4">✓ Task List</h1>
+        <p class="lead text-muted">Organize and track your daily tasks</p>
+      </div>
+
+      <!-- Add Task Form -->
+      <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-body">
+          <form method="POST" action="/tasks/create">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <div class="row">
+              <div class="col-md-8 mb-2 mb-md-0">
+                <input id="task-title" name="title" type="text" class="form-control form-control-lg" placeholder="Task title" required>
+              </div>
+              <div class="col-md-4 mb-2 mb-md-0">
+                <select id="task-priority" name="priority" class="custom-select custom-select-lg">
+                  <option value="">Priority</option>
+                  <option value="high">🔴 High</option>
+                  <option value="medium">🟡 Medium</option>
+                  <option value="low">🟢 Low</option>
+                </select>
+              </div>
+            </div>
+            <div class="mt-3">
+              <textarea id="task-description" name="description" class="form-control form-control-lg task-description-input" rows="4" placeholder="Task description"></textarea>
+            </div>
+            <div class="d-flex justify-content-end mt-3">
+              <button type="submit" class="btn btn-primary btn-lg task-submit-button px-5">
+                ➕ Add Task
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+        <%- include('includes/flash-messages') %>
+
+        <% const formatTaskDate = (date) => new Date(date).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }); %>
+        <% const normalizeTaskStatus = (status) => status === 'in progress' ? 'in-progress' : status; %>
+        <% const pendingTasks = tasks.filter(t => normalizeTaskStatus(t.status) === 'pending'); %>
+        <% const inProgressTasks = tasks.filter(t => normalizeTaskStatus(t.status) === 'in-progress'); %>
+        <% const completedTasks = tasks.filter(t => normalizeTaskStatus(t.status) === 'completed'); %>
+        
+      <!-- Tasks by Status -->
+      <ul class="nav nav-tabs mb-4" role="tablist">
+        <li class="nav-item">
+          <button id="pending-tab-button" class="nav-link active" data-toggle="tab" data-target="#pending" type="button">
+            📋 Pending <span class="badge bg-danger ms-2"><%= pendingTasks.length %></span>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button id="in-progress-tab-button" class="nav-link" data-toggle="tab" data-target="#in-progress" type="button">
+            ⏳ In Progress <span class="badge bg-warning ms-2"><%= inProgressTasks.length %></span>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button id="completed-tab-button" class="nav-link" data-toggle="tab" data-target="#completed" type="button">
+            ✅ Completed <span class="badge bg-success ms-2"><%= completedTasks.length %></span>
+          </button>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+        
+        <!-- Pending -->
+        <div class="tab-pane fade show active" id="pending">
+            <div class="list-group">
+                <% if (pendingTasks.length === 0) { %>
+                  <p class="empty-state-message mb-0">No pending tasks yet.</p>
+                <% } else { %>
+                    <% pendingTasks.forEach(task => { %>
+                        <div class="task-item list-group-item d-flex align-items-start gap-3 p-3 border-start border-danger border-4" data-task-id="<%= task._id %>" data-original-title="<%= task.title %>" data-original-priority="<%= task.priority %>" data-original-status="<%= normalizeTaskStatus(task.status) %>" data-original-description="<%= task.description %>">
+                            <input class="form-check-input mt-1" type="checkbox">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1 task-view-title"><%= task.title %></h6>
+                                <span class="task-view-priority badge bg-<%= task.priority === 'high' ? 'danger' : task.priority === 'medium' ? 'warning' : 'success' %>">
+                                  <%= task.priority === 'high' ? '🔴 High' : task.priority === 'medium' ? '🟡 Medium' : '🟢 Low' %>
+                                </span>
+                                <span class="task-view-due badge bg-light text-dark ms-2">Due: <%= formatTaskDate(task.createdAt) %></span>
+                                <span class="task-view-status badge bg-<%= normalizeTaskStatus(task.status) === 'completed' ? 'success' : normalizeTaskStatus(task.status) === 'in-progress' ? 'info' : 'secondary' %> ms-2">
+                                  Status: <%= normalizeTaskStatus(task.status) === 'in-progress' ? 'In Progress' : normalizeTaskStatus(task.status) === 'completed' ? 'Completed' : 'Pending' %>
+                                </span>
+                                <p class="text-muted mb-2 small mt-2 task-view-description"><%= task.description %></p>
+
+                                <input class="form-control form-control-sm mb-2 d-none task-edit-title" type="text" name="title" value="<%= task.title %>">
+                                <select class="form-control form-control-sm mb-2 d-none task-edit-priority" name="priority">
+                                  <option value="low" <%= task.priority === 'low' ? 'selected' : '' %>>🟢 Low</option>
+                                  <option value="medium" <%= task.priority === 'medium' ? 'selected' : '' %>>🟡 Medium</option>
+                                  <option value="high" <%= task.priority === 'high' ? 'selected' : '' %>>🔴 High</option>
+                                </select>
+                                <select class="form-control form-control-sm mb-2 d-none task-edit-status" name="status">
+                                  <option value="pending" <%= normalizeTaskStatus(task.status) === 'pending' ? 'selected' : '' %>>📋 Pending</option>
+                                  <option value="in-progress" <%= normalizeTaskStatus(task.status) === 'in-progress' ? 'selected' : '' %>>⏳ In Progress</option>
+                                  <option value="completed" <%= normalizeTaskStatus(task.status) === 'completed' ? 'selected' : '' %>>✅ Completed</option>
+                                </select>
+                                <textarea class="form-control form-control-sm d-none task-edit-description" name="description" rows="3"><%= task.description %></textarea>
+
+                            </div>
+                            <form method="POST" action="/tasks/update" class="task-edit-form d-inline-flex align-items-center mr-2">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <input type="hidden" name="id" value="<%= task._id %>">
+                                <input type="hidden" name="title" class="task-edit-data-title">
+                                <input type="hidden" name="priority" class="task-edit-data-priority">
+                                <input type="hidden" name="status" class="task-edit-data-status">
+                                <input type="hidden" name="description" class="task-edit-data-description">
+                              <button class="edit-button btn btn-sm btn-outline-primary" type="button">Edit</button>
+                              <button class="save-button btn btn-sm btn-success d-none ml-2" type="submit">Save</button>
+                            </form>
+                            <form method="POST" action="/tasks/delete" class="d-inline">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <input type="hidden" name="id" value="<%= task._id %>">
+                                <button class="btn btn-sm btn-outline-danger" type="submit">Remove</button>
+                            </form>
+                        </div>
+                    <% }) %>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- In Progress -->
+        <div class="tab-pane fade" id="in-progress">
+          <div class="list-group">
+                <% if (inProgressTasks.length === 0) { %>
+                  <p class="empty-state-message mb-0">No in-progress tasks right now.</p>
+                <% } else { %>
+                    <% inProgressTasks.forEach(task => { %>
+                        <div class="task-item list-group-item d-flex align-items-start gap-3 p-3 border-start border-danger border-4" data-task-id="<%= task._id %>" data-original-title="<%= task.title %>" data-original-priority="<%= task.priority %>" data-original-status="<%= normalizeTaskStatus(task.status) %>" data-original-description="<%= task.description %>">
+                            <input class="form-check-input mt-1" type="checkbox">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1 task-view-title"><%= task.title %></h6>
+                                <span class="task-view-priority badge bg-<%= task.priority === 'high' ? 'danger' : task.priority === 'medium' ? 'warning' : 'success' %>">
+                                  <%= task.priority === 'high' ? '🔴 High' : task.priority === 'medium' ? '🟡 Medium' : '🟢 Low' %>
+                                </span>
+                                <span class="task-view-due badge bg-light text-dark ms-2">Due: <%= formatTaskDate(task.createdAt) %></span>
+                                <span class="task-view-status badge bg-<%= normalizeTaskStatus(task.status) === 'completed' ? 'success' : normalizeTaskStatus(task.status) === 'in-progress' ? 'info' : 'secondary' %> ms-2">
+                                  Status: <%= normalizeTaskStatus(task.status) === 'in-progress' ? 'In Progress' : normalizeTaskStatus(task.status) === 'completed' ? 'Completed' : 'Pending' %>
+                                </span>
+                                <p class="text-muted mb-2 small mt-2 task-view-description"><%= task.description %></p>
+
+                                <input class="form-control form-control-sm mb-2 d-none task-edit-title" type="text" name="title" value="<%= task.title %>">
+                                <select class="form-control form-control-sm mb-2 d-none task-edit-priority" name="priority">
+                                  <option value="low" <%= task.priority === 'low' ? 'selected' : '' %>>🟢 Low</option>
+                                  <option value="medium" <%= task.priority === 'medium' ? 'selected' : '' %>>🟡 Medium</option>
+                                  <option value="high" <%= task.priority === 'high' ? 'selected' : '' %>>🔴 High</option>
+                                </select>
+                                <select class="form-control form-control-sm mb-2 d-none task-edit-status" name="status">
+                                  <option value="pending" <%= normalizeTaskStatus(task.status) === 'pending' ? 'selected' : '' %>>📋 Pending</option>
+                                  <option value="in-progress" <%= normalizeTaskStatus(task.status) === 'in-progress' ? 'selected' : '' %>>⏳ In Progress</option>
+                                  <option value="completed" <%= normalizeTaskStatus(task.status) === 'completed' ? 'selected' : '' %>>✅ Completed</option>
+                                </select>
+                                <textarea class="form-control form-control-sm d-none task-edit-description" name="description" rows="3"><%= task.description %></textarea>
+
+                            </div>
+                            <form method="POST" action="/tasks/update" class="task-edit-form d-inline-flex align-items-center mr-2">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <input type="hidden" name="id" value="<%= task._id %>">
+                              <input type="hidden" name="title" class="task-edit-data-title">
+                              <input type="hidden" name="priority" class="task-edit-data-priority">
+                              <input type="hidden" name="status" class="task-edit-data-status">
+                              <input type="hidden" name="description" class="task-edit-data-description">
+                                <button class="edit-button btn btn-sm btn-outline-primary" type="button">Edit</button>
+                                <button class="save-button btn btn-sm btn-success d-none ml-2" type="submit">Save</button>
+                            </form>
+                            <form method="POST" action="/tasks/delete" class="d-inline">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <input type="hidden" name="id" value="<%= task._id %>">
+                                <button class="btn btn-sm btn-outline-danger" type="submit">Remove</button>
+                            </form>
+                        </div>
+                    <% }) %>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- Completed -->
+        <div class="tab-pane fade" id="completed">
+            <div class="list-group">
+                <% if (completedTasks.length === 0) { %>
+                  <p class="empty-state-message mb-0">No completed tasks yet.</p>
+                <% } else { %>
+                    <% completedTasks.forEach(task => { %>
+                        <div class="task-item list-group-item d-flex align-items-start gap-3 p-3 border-start border-danger border-4" data-task-id="<%= task._id %>" data-original-title="<%= task.title %>" data-original-priority="<%= task.priority %>" data-original-status="<%= normalizeTaskStatus(task.status) %>" data-original-description="<%= task.description %>">
+                            <input class="form-check-input mt-1" type="checkbox">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1 task-view-title"><%= task.title %></h6>
+                                <span class="task-view-priority badge bg-<%= task.priority === 'high' ? 'danger' : task.priority === 'medium' ? 'warning' : 'success' %>">
+                                  <%= task.priority === 'high' ? '🔴 High' : task.priority === 'medium' ? '🟡 Medium' : '🟢 Low' %>
+                                </span>
+                                <span class="task-view-due badge bg-light text-dark ms-2">Due: <%= formatTaskDate(task.createdAt) %></span>
+                                <span class="task-view-status badge bg-<%= normalizeTaskStatus(task.status) === 'completed' ? 'success' : normalizeTaskStatus(task.status) === 'in-progress' ? 'info' : 'secondary' %> ms-2">
+                                  Status: <%= normalizeTaskStatus(task.status) === 'in-progress' ? 'In Progress' : normalizeTaskStatus(task.status) === 'completed' ? 'Completed' : 'Pending' %>
+                                </span>
+                                <p class="text-muted mb-2 small mt-2 task-view-description"><%= task.description %></p>
+
+                                <input class="form-control form-control-sm mb-2 d-none task-edit-title" type="text" name="title" value="<%= task.title %>">
+                                <select class="form-control form-control-sm mb-2 d-none task-edit-priority" name="priority">
+                                  <option value="low" <%= task.priority === 'low' ? 'selected' : '' %>>🟢 Low</option>
+                                  <option value="medium" <%= task.priority === 'medium' ? 'selected' : '' %>>🟡 Medium</option>
+                                  <option value="high" <%= task.priority === 'high' ? 'selected' : '' %>>🔴 High</option>
+                                </select>
+                                <select class="form-control form-control-sm mb-2 d-none task-edit-status" name="status">
+                                  <option value="pending" <%= normalizeTaskStatus(task.status) === 'pending' ? 'selected' : '' %>>📋 Pending</option>
+                                  <option value="in-progress" <%= normalizeTaskStatus(task.status) === 'in-progress' ? 'selected' : '' %>>⏳ In Progress</option>
+                                  <option value="completed" <%= normalizeTaskStatus(task.status) === 'completed' ? 'selected' : '' %>>✅ Completed</option>
+                                </select>
+                                <textarea class="form-control form-control-sm d-none task-edit-description" name="description" rows="3"><%= task.description %></textarea>
+
+                            </div>
+                            <form method="POST" action="/tasks/update" class="task-edit-form d-inline-flex align-items-center mr-2">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <input type="hidden" name="id" value="<%= task._id %>">
+                              <input type="hidden" name="title" class="task-edit-data-title">
+                              <input type="hidden" name="priority" class="task-edit-data-priority">
+                              <input type="hidden" name="status" class="task-edit-data-status">
+                              <input type="hidden" name="description" class="task-edit-data-description">
+                                <button class="edit-button btn btn-sm btn-outline-primary" type="button">Edit</button>
+                                <button class="save-button btn btn-sm btn-success d-none ml-2" type="submit">Save</button>
+                            </form>
+                            <form method="POST" action="/tasks/delete" class="d-inline">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <input type="hidden" name="id" value="<%= task._id %>">
+                                <button class="btn btn-sm btn-outline-danger" type="submit">Remove</button>
+                            </form>
+                        </div>
+                    <% }) %>
+                <% } %>
+            </div>
+        </div>
+
+      </div>
+
+      <!-- Summary Stats -->
+      <div class="row mt-5">
+        <div class="col-md-4 mb-3">
+          <div class="card border-0 shadow-sm bg-light">
+            <div class="card-body text-center">
+              <h5 class="card-title">Pending</h5>
+              <h2 class="display-6 text-danger"><%= pendingTasks.length %></h2>
+              <small class="text-muted">Waiting for action</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-3">
+          <div class="card border-0 shadow-sm bg-light">
+            <div class="card-body text-center">
+              <h5 class="card-title">In Progress</h5>
+              <h2 class="display-6 text-info"><%= inProgressTasks.length %></h2>
+              <small class="text-muted">Currently being worked on</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-3">
+          <div class="card border-0 shadow-sm bg-light">
+            <div class="card-body text-center">
+              <h5 class="card-title">Completed</h5>
+              <h2 class="display-6 text-success"><%= completedTasks.length %></h2>
+              <small class="text-muted">Finished</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="d-flex gap-2 mt-5 mb-5">
+        <button class="btn btn-outline-danger btn-lg flex-grow-1">
+          🗑️ Clear Completed
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  .list-group-item {
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .list-group-item:hover {
+    background-color: #f8f9fa;
+  }
+
+  .list-group-item input[type="checkbox"]:checked ~ div h6 {
+    opacity: 0.7;
+  }
+
+  .nav-tabs .nav-link.active {
+    border-bottom-width: 3px;
+    font-weight: 600;
+  }
+
+  .border-start {
+    border-left-width: 6px !important;
+  }
+
+  .progress {
+    border-radius: 0.25rem;
+  }
+
+  .empty-state-message {
+    margin: 0;
+    padding: 1.1rem 1.25rem;
+    border: 1px dashed #cbd5e1;
+    border-radius: 0.75rem;
+    background: #f8fafc;
+    color: #475569;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+  }
+</style>
+<script src="/assets/js/tasks.js"></script>
+<%- include('includes/footer') %>
