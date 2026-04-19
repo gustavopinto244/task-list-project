@@ -3,7 +3,7 @@ const validator = require('validator');
 const bcryptjs = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
-    email: { type: String, required: true },
+    email: { type: String, required: true, unique: true, trim: true, lowercase: true },
     password: { type: String, required: true },
     name: { type: String, required: true }
 });
@@ -19,7 +19,7 @@ class Login {
 
     cleanUp() {
         const cleanedBody = {
-            email: typeof this.body.email === 'string' ? this.body.email.trim() : '',
+            email: typeof this.body.email === 'string' ? this.body.email.trim().toLowerCase() : '',
             password: typeof this.body.password === 'string' ? this.body.password : '',
             name: '',
         };
@@ -39,13 +39,20 @@ class Login {
         return passwordRegex.test(password);
     }
 
-    validate() {
+    validateRegister() {
         if (!validator.isEmail(this.body.email)) this.errors.push('Invalid email.');
         if (this.body.password.length < 8 || this.body.password.length > 50) {
             this.errors.push('Password must be between 8 and 50 characters.');
         }
         if (!this.isValidPassword(this.body.password)) {
             this.errors.push('Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
+        }
+    }
+
+    validateLogin() {
+        if (!validator.isEmail(this.body.email)) this.errors.push('Invalid email.');
+        if (!this.body.password || this.body.password.length > 50) {
+            this.errors.push('Invalid password.');
         }
     }
 
@@ -58,7 +65,7 @@ class Login {
 
     async register() {
         this.cleanUp();
-        this.validate();
+        this.validateRegister();
         if (this.errors.length > 0) return;
 
         await this.userExists();
@@ -68,13 +75,23 @@ class Login {
         // Hash the password before saving
         const salt = bcryptjs.genSaltSync();
         this.body.password = bcryptjs.hashSync(this.body.password, salt);
-
-        this.user = await UserModel.create(this.body);
+        // Save the user to the database and handle potential duplicate 
+        // key error (code 11000) if another user with the same email 
+        // was created in the meantime
+        try {
+            this.user = await UserModel.create(this.body);
+        } catch (err) {
+            if (err && err.code === 11000) {
+                this.errors.push('User already exists.');
+                return;
+            }
+            throw err;
+        }
     }
 
     async login() {
         this.cleanUp();
-        this.validate();
+        this.validateLogin();
         if (this.errors.length > 0) return;
 
         const user = await UserModel.findOne({ email: this.body.email });
