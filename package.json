@@ -4,7 +4,6 @@
   "description": "Simple task manager built with Node.js, Express, and MongoDB, created to consolidate backend development skills. Features a clean structure and environment management with NVM, with deployment on Linux.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js --ignore public --ignore node_modules",
     "dev": "webpack --watch"
   },

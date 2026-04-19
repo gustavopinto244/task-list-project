@@ -1,5 +1,23 @@
 const Login = require('../models/LoginModel.js');
 
+function getSafeBackURL(req) {
+    const allowedPaths = new Set(['/login/index', '/']);
+    const referer = req.header('Referer');
+
+    if (!referer) return '/login/index';
+
+    try {
+        const url = new URL(referer);
+        if (allowedPaths.has(url.pathname)) {
+            return url.pathname;
+        }
+    } catch (err) {
+        return '/login/index';
+    }
+
+    return '/login/index';
+}
+
 exports.index = (req, res) => {
     if (req.session.user) {
         res.redirect('/');
@@ -21,7 +39,7 @@ exports.register = async function (req, res) {
         if (login.errors.length > 0) {
             req.flash('errors', login.errors);
 
-            const backURL = req.header('Referer') || '/login/index';
+            const backURL = getSafeBackURL(req);
             req.session.save(() => res.redirect(backURL));
             return;
         }
@@ -42,12 +60,16 @@ exports.login = async function (req, res) {
 
         if (login.errors.length > 0) {
             req.flash('errors', login.errors);
-            const backURL = req.header('Referer') || '/login/index';
+            const backURL = getSafeBackURL(req);
             req.session.save(() => res.redirect(backURL));
             return;
         }
 
-        req.session.user = login.user;
+        req.session.user = {
+            _id: login.user._id,
+            name: login.user.name,
+            email: login.user.email,
+        };
         req.session.save(() => res.redirect('/'));
     } catch (e) {
         console.log(e);
