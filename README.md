@@ -90,3 +90,4 @@ http://localhost:3000
 
 - Some screens show UI actions like forgot my password, google login, linkedin login, that are not used in backend.
 - `helmet` is prepared but commented out in `server.js`.
+- Copilot was used most to manage frontend pages with ejs, and solving problems.
